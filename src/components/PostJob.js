@@ -1,20 +1,75 @@
-import * as React from "react";
+import React, { useState } from "react";
+import { baseURL } from '../config';
 import styled from "styled-components";
+// Import axios for making HTTP requests
+import axios from "axios";
+import FileUploadButton from "../Utils/FileUpload";
 
-function PostJobComponent(props) {
+
+const PostJobComponent = (props) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    category: '',
+    make: '',
+    description: '',
+    shopName: '',
+    shopAddress: '',
+    model: '',
+    year: '',
+    biddingDeadline: '',
+    jobPicture: null, // Added a state for the selected file
+  });
+
+  const handleFileSelect = (file) => {
+    // Update the state with the selected file
+    setFormData({
+      ...formData,
+      jobPicture: file,
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const form = new FormData();
+    // Append all form fields
+    Object.keys(formData).forEach((key) => {
+      form.append(key, formData[key]);
+    });
+
+    try {
+      // Make a POST request to your Express backend
+      const response = await axios.post(`${baseURL}/jobs/add`, form);
+
+      console.log(response.data);
+      // Optionally, you can handle success feedback or redirection here
+    } catch (error) {
+      console.error('Error posting job:', error);
+      // Optionally, you can handle error feedback here
+    }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Div>
         <Div2>Post Job</Div2>
         <Div3 />
         <Div4>
           <Div5>
             <Label>Email</Label>
-            <Input type="text" placeholder="Enter your email" />
+            <Input type="text" placeholder="Enter your email" name="email" onChange={handleChange} value={formData.email} />
           </Div5>
           <Div8>
             <Label>Shop name</Label>
-            <Input type="text" placeholder="Enter shop name" />
+            <Input type="text" placeholder="Enter shop name" name="shopName" onChange={handleChange} value={formData.shopName} />
           </Div8>
         </Div4>
         <Div11>
@@ -22,57 +77,60 @@ function PostJobComponent(props) {
             <Column>
               <Div13>
                 <Label>Job Category</Label>
-                <Select>
-                  <option value="">Select a category</option>
+                <Select name="category" defaultValue="" onChange={handleChange} value={formData.category}>
+                  <option value="" disabled>Select a category</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Completed">Completed</option>
                 </Select>
                 <Div22>
-                <Div28>Make</Div28>
-                <Input type="text" placeholder="Enter Make" />
-                <Div28>Job</Div28>
-                <Input2 type="text" placeholder="Enter Job Description" />
-              </Div22>
+                  <Div28>Make</Div28>
+                  <Input type="text" placeholder="Enter Make" name="make" onChange={handleChange} value={formData.make} />
+                  <Div28>Job</Div28>
+                  <Input2 type="text" placeholder="Enter Job Description" name="description" onChange={handleChange} value={formData.description} />
+                </Div22>
               </Div13>
             </Column>
             <Column2>
               <Div17>
                 <Label>Shop Address</Label>
-                <Input type="text" placeholder="Enter shop address" />
+                <Input type="text" placeholder="Enter shop address" name="shopAddress" onChange={handleChange} value={formData.shopAddress} />
               </Div17>
               <Div33>Model</Div33>
-                <Input type="text" placeholder="Enter model" />
-                <Div35>Year</Div35>
-                <Input type="text" placeholder="Enter year" />
-                <Div37>Bidding Deadline</Div37>
-                <Input type="text" placeholder="Enter bidding deadline" />
-                <Div39>Photo (optional)</Div39>
-                <Div40>
-                  <Div41>
-                    <Img3
-                      loading="lazy"
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/3c13c655c243c374f1f00e84cb6d8000835d96fc34d1df59e11d5f4d23d8eeaf?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"
-                    />
-                  </Div41>
-                  <Div42>
-                    <Div43>Click to Upload</Div43>
-                    <Div44>or drag and drop</Div44>
-                  </Div42>
-                  <Div45> (Max. File size: 25 MB)</Div45>
-                </Div40>
+              <Input type="text" placeholder="Enter model" name="model" onChange={handleChange} value={formData.model} />
+              <Div35>Year</Div35>
+              <Input type="text" placeholder="Enter year" name="year" onChange={handleChange} value={formData.year} />
+              <Div37>Bidding Deadline</Div37>
+              <Input type="text" placeholder="Enter bidding deadline" name="biddingDeadline" onChange={handleChange} value={formData.biddingDeadline} />
+              <Div39>Photo (optional)</Div39>
+              <FileUploadButton onFileSelect={handleFileSelect} />
             </Column2>
           </Div12>
         </Div11>
         <Div46>
-        <SubmitText>Submit</SubmitText>
-      </Div46>
+          <SubmitText type="submit">Submit</SubmitText>
+        </Div46>
       </Div>
     </Form>
   );
-}
+};
+
+
 
 // The rest of the styled components remain unchanged
 
-
-// The rest of the styled components remain unchanged
+{/* <UploadPhoto>
+<Div41>
+  <Img3
+    loading="lazy"
+    src="https://cdn.builder.io/api/v1/image/assets/TEMP/3c13c655c243c374f1f00e84cb6d8000835d96fc34d1df59e11d5f4d23d8eeaf?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"
+  />
+</Div41>
+<Div42>
+  <Div43>Click to Upload</Div43>
+  <Div44>or drag and drop</Div44>
+</Div42>
+<Div45> (Max. File size: 25 MB)</Div45>
+</UploadPhoto> */}
 
 const Form = styled.form`
   align-self: stretch;
@@ -364,53 +422,6 @@ const Div17 = styled.div`
   }
 `;
 
-const Div18 = styled.div`
-  color: var(--temp-darks-lesser, #49485e);
-  letter-spacing: -0.28px;
-  font: 400 14px Poppins, sans-serif;
-  @media (max-width: 991px) {
-    max-width: 100%;
-  }
-`;
-
-const Div19 = styled.div`
-  color: var(--darks-whites-500, #3b3f4e);
-  letter-spacing: -0.36px;
-  max-width: 618px;
-  border-radius: 4px;
-  border: 1px solid #b4b4b4;
-  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-  background-color: var(--darks-whites-white, #fffefb);
-  margin-top: 7px;
-  justify-content: center;
-  align-items: start;
-  padding: 23px 60px 23px 18px;
-  font: 400 18px Poppins, sans-serif;
-  @media (max-width: 991px) {
-    max-width: 100%;
-    padding-right: 20px;
-  }
-`;
-
-const Div20 = styled.div`
-  align-self: stretch;
-  z-index: 1;
-  margin-top: -8px;
-  @media (max-width: 991px) {
-    max-width: 100%;
-  }
-`;
-
-const Div21 = styled.div`
-  gap: 20px;
-  display: flex;
-  @media (max-width: 991px) {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0px;
-  }
-`;
-
 
 const Div22 = styled.div`
   display: flex;
@@ -420,75 +431,6 @@ const Div22 = styled.div`
     max-width: 100%;
     margin-top: 40px;
   }
-`;
-
-const Div23 = styled.div`
-  disply: flex;
-  flex-direction: column;
-  fill: var(--darks-whites-white, #fffefb);
-  stroke-width: 1px;
-  stroke: var(--greys-500, #b4b4b4);
-  filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.1));
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  min-height: 218px;
-  width: 100%;
-  padding: 12px 13px 42px 18px;
-  @media (max-width: 991px) {
-    max-width: 100%;
-  }
-`;
-
-const Img = styled.img`
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  object-position: center;
-`;
-
-const Img2 = styled.img`
-  aspect-ratio: 1.4;
-  object-fit: contain;
-  object-position: center;
-  width: 14px;
-  fill: var(--temp-darks-lesser, #49485e);
-  overflow: hidden;
-  align-self: end;
-  max-width: 100%;
-`;
-
-const Div24 = styled.div`
-  position: relative;
-  color: var(--darks-whites-500, #3b3f4e);
-  letter-spacing: -0.36px;
-  font: 400 18px Inter, sans-serif;
-`;
-
-const Div25 = styled.div`
-  position: relative;
-  color: var(--darks-whites-500, #3b3f4e);
-  letter-spacing: -0.36px;
-  margin-top: 22px;
-  font: 400 18px Inter, sans-serif;
-`;
-
-const Div26 = styled.div`
-  position: relative;
-  color: var(--darks-whites-500, #3b3f4e);
-  letter-spacing: -0.36px;
-  margin-top: 22px;
-  font: 400 18px Inter, sans-serif;
-`;
-
-const Div27 = styled.div`
-  position: relative;
-  color: var(--darks-whites-500, #3b3f4e);
-  letter-spacing: -0.36px;
-  margin-top: 22px;
-  font: 400 18px Inter, sans-serif;
 `;
 
 const Div28 = styled.div`
@@ -501,73 +443,7 @@ const Div28 = styled.div`
   }
 `;
 
-const Div29 = styled.div`
-  color: var(--darks-whites-500, #3b3f4e);
-  letter-spacing: -0.36px;
-  max-width: 501px;
-  border-radius: 4px;
-  border: 1px solid #b4b4b4;
-  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-  background-color: var(--darks-whites-white, #fffefb);
-  margin-top: 11px;
-  justify-content: center;
-  align-items: start;
-  padding: 23px 60px 23px 18px;
-  font: 400 18px Poppins, sans-serif;
-  @media (max-width: 991px) {
-    max-width: 100%;
-    padding-right: 20px;
-  }
-`;
 
-const Div30 = styled.div`
-  color: var(--temp-darks-lesser, #49485e);
-  letter-spacing: -0.28px;
-  margin-top: 40px;
-  font: 400 14px Poppins, sans-serif;
-  @media (max-width: 991px) {
-    max-width: 100%;
-  }
-`;
-
-const Div31 = styled.div`
-  color: var(--darks-whites-500, #3b3f4e);
-  letter-spacing: -0.36px;
-  max-width: 500px;
-  border-radius: 4px;
-  border: 1px solid #b4b4b4;
-  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-  background-color: var(--darks-whites-white, #fffefb);
-  margin-top: 7px;
-  align-items: start;
-  padding: 19px 60px 171px 18px;
-  font: 400 18px Poppins, sans-serif;
-  @media (max-width: 991px) {
-    max-width: 100%;
-    padding: 0 20px 40px 0;
-  }
-`;
-
-const Column4 = styled.div`
-  display: flex;
-  flex-direction: column;
-  line-height: normal;
-  width: 55%;
-  margin-left: 20px;
-  @media (max-width: 991px) {
-    width: 100%;
-  }
-`;
-
-const Div32 = styled.div`
-  display: flex;
-  margin-top: 17px;
-  flex-direction: column;
-  @media (max-width: 991px) {
-    max-width: 100%;
-    margin-top: 40px;
-  }
-`;
 
 const Div33 = styled.div`
   color: var(--temp-darks-lesser, #49485e);
@@ -576,26 +452,6 @@ const Div33 = styled.div`
   font: 400 14px Poppins, sans-serif;
   @media (max-width: 991px) {
     max-width: 100%;
-  }
-`;
-
-const Div34 = styled.div`
-  color: var(--darks-whites-500, #3b3f4e);
-  letter-spacing: -0.36px;
-  max-width: 619px;
-  border-radius: 4px;
-  border: 1px solid #b4b4b4;
-  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-  background-color: var(--darks-whites-white, #fffefb);
-  align-self: stretch;
-  margin-top: 11px;
-  justify-content: center;
-  align-items: start;
-  padding: 23px 60px 23px 18px;
-  font: 400 18px Poppins, sans-serif;
-  @media (max-width: 991px) {
-    max-width: 100%;
-    padding-right: 20px;
   }
 `;
 
@@ -610,25 +466,6 @@ const Div35 = styled.div`
   }
 `;
 
-const Div36 = styled.div`
-  color: var(--darks-whites-500, #3b3f4e);
-  letter-spacing: -0.36px;
-  max-width: 619px;
-  border-radius: 4px;
-  border: 1px solid #b4b4b4;
-  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-  background-color: var(--darks-whites-white, #fffefb);
-  align-self: stretch;
-  margin-top: 11px;
-  justify-content: center;
-  align-items: start;
-  padding: 23px 60px 23px 18px;
-  font: 400 18px Poppins, sans-serif;
-  @media (max-width: 991px) {
-    max-width: 100%;
-    padding-right: 20px;
-  }
-`;
 
 const Div37 = styled.div`
   color: var(--temp-darks-lesser, #49485e);
@@ -641,25 +478,7 @@ const Div37 = styled.div`
   }
 `;
 
-const Div38 = styled.div`
-  color: var(--darks-whites-500, #3b3f4e);
-  letter-spacing: -0.36px;
-  max-width: 619px;
-  border-radius: 4px;
-  border: 1px solid #b4b4b4;
-  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-  background-color: var(--darks-whites-white, #fffefb);
-  align-self: stretch;
-  margin-top: 7px;
-  justify-content: center;
-  align-items: start;
-  padding: 23px 60px 23px 18px;
-  font: 400 18px Poppins, sans-serif;
-  @media (max-width: 991px) {
-    max-width: 100%;
-    padding-right: 20px;
-  }
-`;
+
 
 const Div39 = styled.div`
   color: #49485e;
@@ -671,7 +490,7 @@ const Div39 = styled.div`
   }
 `;
 
-const Div40 = styled.div`
+const UploadPhoto = styled.div`
   align-items: center;
   border-radius: 6px;
   border: 1px dashed #cacaca;
@@ -767,7 +586,7 @@ const Div46 = styled.div`
 
 // ... (existing code)
 
-const SubmitText = styled.div`
+const SubmitText = styled.button`
   color: #fff;
   font-size: 18px;
   font-weight: 600;

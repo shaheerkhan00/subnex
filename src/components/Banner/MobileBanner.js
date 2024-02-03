@@ -15,9 +15,9 @@ function MobileBanner(props) {
       </Div2>
       <Div3>
         <Div4>
-          <p>Vendor Login</p>
+          <p>Vendor SignUp</p>
         </Div4>
-        <Div5>Shop Login</Div5>
+        <Div5>Shop SignUp</Div5>
       </Div3>
     </Div>
   );

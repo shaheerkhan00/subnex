@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const FileUploadContainer = styled.div`
@@ -67,17 +68,22 @@ const InfoText = styled.div`
 
 const FileUploadButton = ({ onFileSelect }) => {
   const fileInputRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null); 
 
   const handleFileButtonClick = () => {
     fileInputRef.current.click();
   };
 
   const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      console.log('Selected file:', selectedFile);
+    const file = event.target.files[0];
+    console.log('Selected file:', file);
+
+
+    if (file) {
+      setSelectedFile(file);
+
       if (onFileSelect) {
-        onFileSelect(selectedFile);
+        onFileSelect(file);
       }
     }
   };
@@ -91,10 +97,17 @@ const FileUploadButton = ({ onFileSelect }) => {
         onChange={handleFileChange}
       />
       <FileUploadPreview>
-        <PreviewImage
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/ad317b6ee6da5a8f6ea3cd7cf2b5056549ccf869c7c573ab084816305a8ba36d?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"
-        />
+        {selectedFile ? (
+          <PreviewImage
+            loading="lazy"
+            src={URL.createObjectURL(selectedFile)}
+          />
+        ) : (
+          <PreviewImage
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/ad317b6ee6da5a8f6ea3cd7cf2b5056549ccf869c7c573ab084816305a8ba36d?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"
+          />
+        )}
       </FileUploadPreview>
       <FileUploadInfo>
         <InfoText color="#e7b31a" font="500 14px Poppins, sans-serif">

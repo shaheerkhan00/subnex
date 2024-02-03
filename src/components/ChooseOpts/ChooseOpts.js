@@ -1,12 +1,15 @@
 import * as React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+
 
 function ChooseOpts(props) {
   return (
-    <Div>
+    <Div id="about">
       <Div2>
         <Column>
-          <Card>
+
+        <Card>
             <Img
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/0cf86b0f9439c0a8a4de8a767f6b3d0ad8740c064879d865c5a7776244d04f41?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"
@@ -19,7 +22,7 @@ function ChooseOpts(props) {
           </Card>
         </Column>
         <Column2>
-          <Card>
+        <Card>
             <Img
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/e69b95367a635fa1c87581801b3e493f0b134d28735bb8bded743bca717a82d5?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"
@@ -63,7 +66,9 @@ const Div2 = styled.div`
     gap: 0px;
   }
 `;
-
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`;
 const Column = styled.div`
   display: flex;
   flex-direction: column;

@@ -4,10 +4,11 @@ import SlidingTabs from '../components/SlidingTabs';
 
 function SlidingPage() {
   return (
-    <Layout>    
+      <div>
+      <div style={{ marginTop: '50px' }} /> 
       <SlidingTabs />
-      <div style={{ marginBottom: '20px' }} /> {/* Add some margin after SlidingTabs */}
-    </Layout>
+      </div>
+
   );
 }
 

@@ -1,12 +1,14 @@
-import React from 'react'
-import Layout from '../common/Layout'
-import ShopDashboardCompnent from '../components/ShopDashboard'
-function ShopDashboard() {
+// ShopDashboard.jsx
+import React from 'react';
+import Layout from '../common/Layout';
+import SecondSlidingPage from './SecondSlidingPage';
+
+function ShopDashboard({ userInfo }) {
   return (
-<Layout>  
-  <ShopDashboardCompnent/>  
-</Layout>
-  )
+    <Layout>
+      <SecondSlidingPage userInfo={userInfo} />
+    </Layout>
+  );
 }
 
-export default ShopDashboard
+export default ShopDashboard;

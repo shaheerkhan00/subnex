@@ -1,19 +1,20 @@
 import { FaBars } from 'react-icons/fa';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import VendorPendingJobs from '../pages/VendorPendingJobs';
-import VendorCompletedJobs from '../pages/VendorCompletedJobs';
+import CompletedJobs from '../pages/CompletedJobs';
+import PendingJobs from '../pages/PendingJobs';
+import PostJobComponent from '../components/PostJob';
+import ShopDashboardCompnent from './ShopDashboard';
 import VendorDashboardComponent from './VendorDashboard';
-import Preferences from '../pages/Preferences'
 
 const options = [
-  { id: 1, label: 'Pending Jobs', component: VendorPendingJobs },
-  { id: 2, label: 'Completed Jobs', component: VendorCompletedJobs },
-  { id: 3, label: 'Preferences', component: Preferences },
-  { id: 4, label: 'Notifications', component: VendorDashboardComponent },
+  { id: 1, label: 'Pending Jobs', component: PendingJobs },
+  { id: 2, label: 'Completed', component: CompletedJobs },
+  { id: 3, label: 'Post Jobs', component: PostJobComponent },
+  { id: 4, label: 'Post New Jobs', component: ShopDashboardCompnent },
 ];
 
-const SlidingTabs = () => {
+const SecondSlidingTabs = () => {
   const [activeOption, setActiveOption] = useState(options[0].id);
 
   const handleOptionClick = (optionId) => {
@@ -21,7 +22,7 @@ const SlidingTabs = () => {
   };
 
   return (
-    <div>
+    <Container>
       <TabsContainer>
         {options.map((option) => (
           <Tab
@@ -41,12 +42,11 @@ const SlidingTabs = () => {
           activeOption === option.id ? <option.component key={option.id} /> : null
         )}
       </TabContent>
-    </div>
+    </Container>
   );
 };
 const Container = styled.div`
   border-radius: 16px;
-  align-items:center;
   box-shadow: 10px 40px 50px 0px rgba(229, 233, 246, 0.4);
   background-color: #fff;
   padding: 29px 44px 0 16px;
@@ -110,4 +110,4 @@ const TabContent = styled.div`
   padding: 20px;
 `;
 
-export default SlidingTabs;
+export default SecondSlidingTabs;

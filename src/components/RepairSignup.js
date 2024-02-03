@@ -1,9 +1,61 @@
-import * as React from "react";
 import styled from "styled-components";
-import FileUploadButton from "../Utils/FileUpload";
+import axios from "axios";
+import React, { useState } from "react";
+import { baseURL } from '../config';
+import Modal from 'react-modal';
+import ShopDashboard from "../pages/ShopDashboard";
+// Define a simple Button component
+const Button = ({ onClick, children }) => (
+  <button style={{ padding: '8px', cursor: 'pointer' }} onClick={onClick}>
+    {children}
+  </button>
+);
+
+Modal.setAppElement('#root'); // Set the root element for accessibility
 
 
-function VendorsLoginComponent(props) {
+function RepairSignupComponent(props) {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    preferences: 'option1',
+    businessName: '',
+    agreeTerms: false,
+  });
+
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showFailurePopup, setShowFailurePopup] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      console.log(formData)  ///////HERE//////
+      const response = await axios.post(`${baseURL}/shopper-signup`, formData);
+      console.log(response);
+      setShowSuccessPopup(true);
+      // You can handle success logic here, such as showing a success modal
+    } catch (error) {
+      console.error('Error signing up:', error);
+      setShowFailurePopup(true);
+    }
+  };
+  
+  const handleChange = (event) => {
+    const { name, type, checked } = event.target;
+    
+    const inputValue = type === 'checkbox' ? checked : event.target.value;
+    console.log(inputValue)
+    setFormData({
+      ...formData,
+      [name]: inputValue,
+    });
+  };
+  const closeModal = () => {
+    setShowSuccessPopup(false);
+    setShowFailurePopup(false);
+  };
   return (
     <Div>
       <Div2>
@@ -20,49 +72,109 @@ function VendorsLoginComponent(props) {
               Lorem Ipsum is simply dummy text of the andtypesetting
               industry.Lorem{" "}
             </Div5>
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <FormRow>
                 <Label htmlFor="fullName">Full Name</Label>
-                <Input type="text" id="fullName" placeholder="Name here" />
+                <Input
+                  type="text"
+                  id="fullName"
+                  placeholder="Name here"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                />
               </FormRow>
               <FormRow>
                 <Label htmlFor="email">Email</Label>
-                <Input type="email" id="email" placeholder="email here" />
+                <Input
+                  type="email"
+                  id="email"
+                  placeholder="email here"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
               </FormRow>
               <FormRow>
                 <Label htmlFor="password">Password</Label>
-                <Input type="password" id="password" placeholder="password here" />
+                <Input
+                  type="password"
+                  id="password"
+                  placeholder="password here"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
               </FormRow>
               <FormRow>
                 <Label htmlFor="preferences">Preferences</Label>
-                <Select id="preferences">
+                <Select
+                  id="preferences"
+                  name="preferences"
+                  value={formData.preferences}
+                  onChange={handleChange}
+                >
                   <option value="option1">Option 1</option>
                   <option value="option2">Option 2</option>
                   {/* Add more options as needed */}
                 </Select>
               </FormRow>
-              
-              <Label>Upload Tax ID</Label>
-              <FileUploadButton onFileSelect={(selectedFile) => console.log(selectedFile)} />
-
               <FormRow>
                 <Label htmlFor="businessName">Business Name</Label>
-                <Input type="text" id="businessName" placeholder="Business Name" />
+                <Input
+                  type="text"
+                  id="businessName"
+                  placeholder="Business Name"
+                  name="businessName"
+                  value={formData.businessName}
+                  onChange={handleChange}
+                />
               </FormRow>
               <FormRow>
                 <CheckboxLabel>
-                  <Checkbox type="checkbox" id="agreeTerms" />
+                  <Checkbox
+                    type="checkbox"
+                    id="agreeTerms"
+                    name="agreeTerms"
+                    checked={formData.agreeTerms}
+                    onChange={handleChange}
+                  />
                   I agree to terms & conditions
                 </CheckboxLabel>
               </FormRow>
+              <Div27>Login Account</Div27>
             </Form>
-            <Div27>Login Account</Div27>
           </Div3>
         </Column2>
       </Div2>
+          {/* Success Modal */}
+          <SmallModal
+        isOpen={showSuccessPopup}
+        onRequestClose={closeModal}
+        contentLabel="Success Modal"
+      >
+        <ModalText>Signup Successful</ModalText>
+        <SmallButton onClick={() => window.location.href = "/shop-dashboard"}>
+          OK
+        </SmallButton>
+      </SmallModal>
+
+      {/* Failure Modal */}
+      <SmallModal
+        isOpen={showFailurePopup}
+        onRequestClose={closeModal}
+        contentLabel="Failure Modal"
+      >
+        <ModalText>Signup Failed</ModalText>
+        <SmallButton onClick={closeModal}>
+          OK
+        </SmallButton>
+      </SmallModal>
+    
     </Div>
   );
 }
+
 
 const Div = styled.div`
   background-color: #fff;
@@ -73,7 +185,49 @@ const Div = styled.div`
 const Form = styled.form`
   align-self: stretch;
 `;
+const SmallModal = styled(Modal)`
+  width: 300px;
+  height: 150px;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 10px; /* Added border-radius for curved ends */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Added box-shadow for a little shadow */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
+const ModalText = styled.div`
+  font-size: 16px;
+  text-align: center;
+  color: #000;
+`;
 
+const SmallButton = styled(Button)`
+color: #fff;
+text-align: center;
+white-space: nowrap;
+border-radius: 6px;
+background-color: var(--main-color, #e7b31a);
+justify-content: center;
+align-items: center;
+padding: 10px 20px;
+cursor: pointer;
+font: 500 16px Inter, sans-serif;
+@media (max-width: 991px) {
+  white-space: initial;
+  max-width: 100%;
+  padding: 0 20px;
+}
+
+`;
 const FormRow = styled.div`
   display: flex;
   flex-direction: column;
@@ -538,7 +692,7 @@ const Div26 = styled.div`
   }
 `;
 
-const Div27 = styled.div`
+const Div27 = styled.button`
   color: #fff;
   text-align: center;
   white-space: nowrap;
@@ -557,4 +711,4 @@ const Div27 = styled.div`
   }
 `;
 
-export default VendorsLoginComponent
+export default RepairSignupComponent

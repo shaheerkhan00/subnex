@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 function Footer(props) {
   return (
-    <Div>
+    <Div id="contact">
       <Img
         loading="lazy"
         srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/4eb5c325894de7c91816017b0f00c578072e9938ccf23d1ba71f0d3c372ef5f3?apiKey=9a669d50f53c42b584b65aa6b91b08d5&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/4eb5c325894de7c91816017b0f00c578072e9938ccf23d1ba71f0d3c372ef5f3?apiKey=9a669d50f53c42b584b65aa6b91b08d5&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/4eb5c325894de7c91816017b0f00c578072e9938ccf23d1ba71f0d3c372ef5f3?apiKey=9a669d50f53c42b584b65aa6b91b08d5&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/4eb5c325894de7c91816017b0f00c578072e9938ccf23d1ba71f0d3c372ef5f3?apiKey=9a669d50f53c42b584b65aa6b91b08d5&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/4eb5c325894de7c91816017b0f00c578072e9938ccf23d1ba71f0d3c372ef5f3?apiKey=9a669d50f53c42b584b65aa6b91b08d5&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/4eb5c325894de7c91816017b0f00c578072e9938ccf23d1ba71f0d3c372ef5f3?apiKey=9a669d50f53c42b584b65aa6b91b08d5&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/4eb5c325894de7c91816017b0f00c578072e9938ccf23d1ba71f0d3c372ef5f3?apiKey=9a669d50f53c42b584b65aa6b91b08d5&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/4eb5c325894de7c91816017b0f00c578072e9938ccf23d1ba71f0d3c372ef5f3?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"

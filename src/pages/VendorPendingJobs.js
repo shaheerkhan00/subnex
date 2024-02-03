@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios"; // Import axios for making HTTP requests
 import { baseURL } from '../config';
 
-function PendingJobs() {
+function VendorPendingJobs() {
   const [jobs, setJobs] = React.useState([]);
 
   React.useEffect(() => {
@@ -13,19 +13,7 @@ function PendingJobs() {
       .catch((error) => console.error("Error fetching pending jobs:", error));
   }, []);
 
-  const handleCompleteClick = (email) => {
-    // Send a request to update the job status
-    axios.put(`${baseURL}/jobs/update-status/${email}`)
-      .then((response) => {
-        console.log(response.data);
-        // After successful update, refresh the list of pending jobs
-        axios.get(`${baseURL}/jobs/pending`)
-          .then((response) => setJobs(response.data))
-          .catch((error) => console.error("Error fetching pending jobs:", error));
-      })
-      .catch((error) => console.error("Error updating job status:", error));
-  };
-
+  // Function to chunk the jobs array into arrays of 3 elements each
   const chunkedJobs = jobs.reduce((acc, job, index) => {
     const chunkIndex = Math.floor(index / 3);
     if (!acc[chunkIndex]) {
@@ -41,11 +29,11 @@ function PendingJobs() {
         {chunkedJobs.map((row, rowIndex) => (
           <Div3 key={rowIndex}>
             {row.map((job) => (
-              <StyledLink key={job.id}>
+              <StyledLink to={`/placed-Pending/${job.id}`} key={job.id}>
                 <StyledCard>
                   <CardHeading>{formatShopName(job.shopName)}</CardHeading>
                   <CardText>{formatDescription(job.description)}</CardText>
-                  <CardButton onClick={() => handleCompleteClick(job.email)}>Complete</CardButton>
+                  <CardButton>Pending</CardButton>
                 </StyledCard>
               </StyledLink>
             ))}
@@ -223,4 +211,4 @@ const SeeMoreButton = styled(Link)`
 
 
 
-export default PendingJobs
+export default VendorPendingJobs

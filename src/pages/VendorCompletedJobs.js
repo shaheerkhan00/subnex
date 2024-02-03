@@ -4,28 +4,15 @@ import { Link } from "react-router-dom";
 import axios from "axios"; // Import axios for making HTTP requests
 import { baseURL } from '../config';
 
-function PendingJobs() {
+function VendorCompletedJobs(props) {
   const [jobs, setJobs] = React.useState([]);
 
   React.useEffect(() => {
-    axios.get(`${baseURL}/jobs/pending`)
+    axios.get(`${baseURL}/jobs/completed`)
       .then((response) => setJobs(response.data))
       .catch((error) => console.error("Error fetching pending jobs:", error));
   }, []);
-
-  const handleCompleteClick = (email) => {
-    // Send a request to update the job status
-    axios.put(`${baseURL}/jobs/update-status/${email}`)
-      .then((response) => {
-        console.log(response.data);
-        // After successful update, refresh the list of pending jobs
-        axios.get(`${baseURL}/jobs/pending`)
-          .then((response) => setJobs(response.data))
-          .catch((error) => console.error("Error fetching pending jobs:", error));
-      })
-      .catch((error) => console.error("Error updating job status:", error));
-  };
-
+  // Function to chunk the jobs array into arrays of 3 elements each
   const chunkedJobs = jobs.reduce((acc, job, index) => {
     const chunkIndex = Math.floor(index / 3);
     if (!acc[chunkIndex]) {
@@ -38,31 +25,31 @@ function PendingJobs() {
   return (
     <Div>
       <Div2>
-        {chunkedJobs.map((row, rowIndex) => (
-          <Div3 key={rowIndex}>
-            {row.map((job) => (
-              <StyledLink key={job.id}>
-                <StyledCard>
-                  <CardHeading>{formatShopName(job.shopName)}</CardHeading>
-                  <CardText>{formatDescription(job.description)}</CardText>
-                  <CardButton onClick={() => handleCompleteClick(job.email)}>Complete</CardButton>
-                </StyledCard>
-              </StyledLink>
-            ))}
-          </Div3>
-        ))}
+        <Div3>
+          {chunkedJobs.map((row, rowIndex) => (
+            <Column key={rowIndex}>
+              {row.map((job) => (
+                <StyledLink to={`/placed-Complete/${job.id}`} key={job.id}>
+                  <StyledCard>
+                    <CardHeading>{job.title}</CardHeading>
+                    <CardText>{formatDescription(job.description)}</CardText>
+                    <CardButton>Complete</CardButton>
+                  </StyledCard>
+                </StyledLink>
+              ))}
+            </Column>
+          ))}
+        </Div3>
       </Div2>
-      <SeeMoreButton to="/placed-Pending">See more</SeeMoreButton>
+      <SeeMoreButton to="/placed-Complete">See more</SeeMoreButton>
     </Div>
   );
 }
 
-
-// Function to format description as specified
 // Function to format description as specified
 function formatDescription(description) {
   if (!description) {
-    return ''; // Handle the case when description is undefined
+    return '';
   }
 
   if (description.length > 20) {
@@ -79,41 +66,35 @@ function formatDescription(description) {
   return description;
 }
 
-function formatShopName(shopName) {
-  if (!shopName) {
-    return ''; // Handle the case when description is undefined
-  }
-  if (shopName.length > 5) {
-    return (
-      <>
-        {shopName}
-        <br />
-      </>
-    );
-  }
-  return shopName;
-}
+
+
 
 
 const Div = styled.div`
+  display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const Div2 = styled.div`
-  width: 90%;
-  padding: 0 10px;
-  @media (max-width: 900px) {
-    max-width: 90%;
+  align-self: stretch;
+  width: 100%;
+  padding: 0 20px;
+  @media (max-width: 991px) {
+    max-width: 100%;
   }
 `;
 
 const Div3 = styled.div`
-  gap: 10px;
+  gap: 20px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  @media (max-width: 991px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0px;
+  }
 `;
+
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -124,26 +105,7 @@ const Column = styled.div`
     width: 100%;
   }
 `;
-const Column2 = styled.div`
-  display: flex;
-  flex-direction: column;
-  line-height: normal;
-  width: 33%;
-  margin-left: 20px;
-  @media (max-width: 991px) {
-    width: 100%;
-  }
-`;
-const Column3 = styled.div`
-  display: flex;
-  flex-direction: column;
-  line-height: normal;
-  width: 33%;
-  margin-left: 20px;
-  @media (max-width: 991px) {
-    width: 100%;
-  }
-`;
+
 const StyledCard = styled.div`
   width: 443px; // Adjust the width based on your styling needs
   box-sizing: border-box;
@@ -223,4 +185,4 @@ const SeeMoreButton = styled(Link)`
 
 
 
-export default PendingJobs
+export default VendorCompletedJobs

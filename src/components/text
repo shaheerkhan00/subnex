@@ -93,7 +93,7 @@ const VendorDashboardComponent = () => {
       <span style={{color:" rgba(255,193,3,1)"}}>Submitted Bids</span>
       <span style={{color: "rgba(55,53,44,1)"}}> (1)</span>
     </BidsHeading>
-    </Div49>
+    <Div49>
     <Div52>
     <BidTime>
       Initiated Oct 29, 2023
@@ -101,21 +101,21 @@ const VendorDashboardComponent = () => {
       16 days ago
     </BidTime>
     <BidService>Car Repair</BidService>
-    <AnotherSpace>
-      <Column>      <Img12
+    
+      <Img12
         loading="lazy"
         src="https://cdn.builder.io/api/v1/image/assets/TEMP/9541edeaaeb7411c29b47b8494f3fb4ad5fa8fc395c1121d88e1b3b5feb4bee2?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"
       />
-      <Viewed>Viewed by client</Viewed></Column>
-
-      </AnotherSpace>
+      <Viewed>Viewed by client</Viewed>
+      <AnotherSpace/>
       </Div52>
     </BidArea>
     <SeeBtn>See more</SeeBtn>
     </div>
 
-  )
+  );
 };
+
 
 function formatDescription(description) {
   if (!description) {
@@ -137,47 +137,61 @@ function formatDescription(description) {
 }
 
 
-const CardUpper = styled.div`
-  display: grid;
-  text-align: center;  // Center the content
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-right: 22px;
-  @media (max-width: 991px) {
-    margin-right: 10px;
-  }
+
+const Div = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
-const Time = styled.div`
-  color: rgba(49, 48, 45, 0.8);
+const Div2 = styled.div`
+  align-self: start;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 20px;
+`;
+
+const Div3 = styled.div`
+  background-color: #fccd3d;
+  display: flex;
+  width: 75px;
+  height: 4px;
+  flex-direction: column;
+  margin: auto 0;
+`;
+
+const Div4 = styled.div`
+  color: #ffc103;
   font-feature-settings: "salt" on, "clig" off, "liga" off;
+  align-self: stretch;
+  flex-grow: 1;
   white-space: nowrap;
-  font: 400 12px Poppins, sans-serif;
+  font: 700 18px Poppins, sans-serif;
   @media (max-width: 991px) {
     white-space: initial;
   }
 `;
 
-const Category = styled.div`
-  color: #000;
-  white-space: nowrap;
-  font: 600 24px Poppins, sans-serif;
+const Div5 = styled.div`
+  align-self: stretch;
+  margin-top: 43px;
+  width: 100%;
+  padding: 0 20px;
+  @media (max-width: 991px) {
+    max-width: 100%;
+    margin-top: 40px;
+  }
 `;
 
-const Service = styled.div`
-  color: #000;
-  white-space: nowrap;
-  font: 500 20px Poppins, sans-serif;
+const Div6 = styled.div`
+  gap: 20px;
+  display: flex;
+  @media (max-width: 991px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0px;
+  }
 `;
-
-const Make = styled.div`
-  color: rgba(0, 0, 0, 0.8);
-  white-space: nowrap;
-  font: 200 16px Poppins, sans-serif;
-`;
-
-// ... (rest of the components)
-
 
 const Column = styled.div`
   display: flex;
@@ -192,6 +206,18 @@ const Column = styled.div`
   }
 `;
 
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin: 0 10px;  // Adjust margin as needed
+  line-height: normal;
+  width: 36%;
+  margin-left: 0px;
+  @media (max-width: 991px) {
+    width: 100%;
+  }
+`;
 const Card = styled.div`
   border-radius: 25px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -201,7 +227,7 @@ const Card = styled.div`
   margin-top: 7px;
   flex-grow: 1;
   flex-direction: column;
-  align-items: center;
+  align-items: end;
   width: 80%;
   padding: 14px 0 31px;
   @media (max-width: 991px) {
@@ -211,7 +237,16 @@ const Card = styled.div`
 
 // Existing styles...
 
-
+const CardUpper = styled.div`
+  display: grid;
+  text-align: left;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-right: 22px;
+  @media (max-width: 991px) {
+    margin-right: 10px;
+  }
+`;
 
 // ... (rest of the components)
 
@@ -225,7 +260,51 @@ const ImagesContainer = styled.div`
   padding: 0 1px;
 `;
 
+const Time = styled.div`
+  color: rgba(49, 48, 45, 0.8);
+  font-feature-settings: "salt" on, "clig" off, "liga" off;
+  align-self: end;
+  white-space: nowrap;
+  font: 400 12px Poppins, sans-serif;
+  @media (max-width: 991px) {
+    white-space: initial;
+  }
+`;
 
+const Category = styled.div`
+  color: #000;
+  align-self: left;
+  white-space: nowrap;
+  margin: 0px 0 0 17px;
+  font: 600 24px Poppins, sans-serif;
+  @media (max-width: 991px) {
+    margin-left: 10px;
+    white-space: initial;
+  }
+`;
+
+const Service = styled.div`
+  color: #000;
+  align-self: stretch;
+  margin-top: 24px;
+  white-space: nowrap;
+  font: 500 20px Poppins, sans-serif;
+  @media (max-width: 991px) {
+    white-space: initial;
+  }
+`;
+
+const Make = styled.div`
+  color: rgba(0, 0, 0, 0.8);
+  align-self: start;
+  white-space: nowrap;
+  margin: 14px 0 0 30px;
+  font: 600 16px Poppins, sans-serif;
+  @media (max-width: 991px) {
+    margin-left: 10px;
+    white-space: initial;
+  }
+`;
 
 const CardLower = styled.div`
   align-self: stretch;
@@ -413,22 +492,20 @@ const BidsHeading = styled.div`
 
 const AnotherSpace = styled.div`
   border-radius: 15px;
-  border: 1px solid transparent;
+  border: 1px solid rgba(0, 0, 0, 0.4);
   align-self: stretch;
-  align-items: center;  // Corrected spelling here
   display: flex;
   margin-top: 30px;
-  justify-content: center;
+  justify-content: space-between;
   gap: 20px;
-  padding: 4px 5px;
-  @media (max-width: 900px) {
-    max-width: 70%;
+  padding: 42px 25px;
+  @media (max-width: 991px) {
+    max-width: 100%;
     flex-wrap: wrap;
     justify-content: center;
     padding: 0 20px;
   }
 `;
-
 
 const BidTime = styled.div`
   color: #181818;
@@ -440,7 +517,6 @@ const BidTime = styled.div`
 const BidService = styled.div`
   color: var(--main-color, #e7b31a);
   margin-top: 22px;
-  margin-right: 373px;
   font: 600 24px/32px Inter, sans-serif;
 `;
 
@@ -543,3 +619,58 @@ const Div52 = styled.div`
 
 
 export default VendorDashboardComponent
+
+
+
+<Div47>See more</Div47>
+<Div48>
+  <Div49>
+    <Div50 />
+    <Div51>
+      <span style={{color:" rgba(255,193,3,1)"}}>Submitted Bids</span>
+      <span style={{color: "rgba(55,53,44,1)"}}> (1)</span>
+    </Div51>
+  </Div49>
+  <Div52>
+    <Div53>
+      Initiated Oct 29, 2023
+      <br />
+      16 days ago
+    </Div53>
+    <Div54>Car Repair</Div54>
+    <Div55>
+      <Img12
+        loading="lazy"
+        src="https://cdn.builder.io/api/v1/image/assets/TEMP/9541edeaaeb7411c29b47b8494f3fb4ad5fa8fc395c1121d88e1b3b5feb4bee2?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"
+      />
+      <Div56>Viewed by client</Div56>
+    </Div55>
+  </Div52>
+</Div48>
+<Div57>See more</Div57>
+
+/////////////////////////////////////////////////////
+<BidArea>
+<Div49>
+<Space />
+<BidsHeading>
+  <span style={{color:" rgba(255,193,3,1)"}}>Submitted Bids</span>
+  <span style={{color: "rgba(55,53,44,1)"}}> (1)</span>
+</BidsHeading>
+<Div49>
+<Div52>
+<BidTime>
+  Initiated Oct 29, 2023
+  <br />
+  16 days ago
+</BidTime>
+<BidService>Car Repair</BidService>
+
+  <Img12
+    loading="lazy"
+    src="https://cdn.builder.io/api/v1/image/assets/TEMP/9541edeaaeb7411c29b47b8494f3fb4ad5fa8fc395c1121d88e1b3b5feb4bee2?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"
+  />
+  <Viewed>Viewed by client</Viewed>
+  <AnotherSpace/>
+  </Div52>
+</BidArea>
