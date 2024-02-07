@@ -78,6 +78,7 @@ const Button = ({ onClick, children }) => (
   
     const navigateToDashboard = () => {
       if (userInfo && roleSelected) {
+        console.log(userInfo)
         if (roleSelected === 'shop' || roleSelected === 'vendor') {
           // Navigate to the respective dashboard with userInfo
           navigate(`/${roleSelected}-dashboard`, { state: { userInfo } });

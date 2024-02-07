@@ -11,7 +11,7 @@ const options = [
   { id: 1, label: 'Pending Jobs', component: PendingJobs },
   { id: 2, label: 'Completed', component: CompletedJobs },
   { id: 3, label: 'Post Jobs', component: PostJobComponent },
-  { id: 4, label: 'Post New Jobs', component: ShopDashboardCompnent },
+  { id: 4, label: 'Posted Jobs', component: ShopDashboardCompnent },
 ];
 
 const SecondSlidingTabs = () => {

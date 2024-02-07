@@ -1,14 +1,14 @@
+// SlidingPage.jsx
+
 import React from 'react';
-import Layout from '../common/Layout';
 import SlidingTabs from '../components/SlidingTabs';
 
-function SlidingPage() {
+function SlidingPage({ userInfo }) {
   return (
-      <div>
+    <div>
       <div style={{ marginTop: '50px' }} /> 
-      <SlidingTabs />
-      </div>
-
+      <SlidingTabs userInfo={userInfo} />
+    </div>
   );
 }
 

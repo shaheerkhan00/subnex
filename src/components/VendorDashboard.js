@@ -7,8 +7,11 @@ import axios from 'axios';  // Import axios for API calls
 import { baseURL } from '../config';  // Assuming baseURL is correctly imported
 
 
-const VendorDashboardComponent = () => {
+const VendorDashboardComponent = ({ userInfo }) => {
+  console.log(userInfo)
   const [jobs, setJobs] = React.useState([]);
+  const [submittedBids, setSubmittedBids] = React.useState([]);
+  const [bidCount, setBidCount] = React.useState(1);
 
   React.useEffect(() => {
     axios.get(`${baseURL}/jobs/all`)
@@ -24,97 +27,130 @@ const VendorDashboardComponent = () => {
     slidesToScroll: 1,
   };
 
-  // Calculate the number of sliders based on the desired number of slides
+// ...
+
+const handleBidSubmission = async (job) => {
+  try {
+    // Include the user ID in the job data
+    const bidDataWithUserId = {
+      ...job,
+      userId: userInfo.id,
+    };
+
+    // Make a POST request to the /submit-bid endpoint with the updated job data
+    const response = await axios.post(`${baseURL}/submit-bid`, bidDataWithUserId);
+
+    // If the bid is submitted successfully, update the state
+    if (response.data && response.data.bidId) {
+      setSubmittedBids([...submittedBids, job]);
+      setBidCount(submittedBids.length + 1);
+      console.log('Bid submitted successfully:', response.data.bidId);
+    } else {
+      console.error('Failed to submit bid:', response.data.error);
+    }
+  } catch (error) {
+    console.error('Error submitting bid:', error.message);
+  }
+};
+
+// ...
+
+
   const numberOfSlides = Math.ceil(jobs.length / 3);
 
   return (
     <div>
-    <Slider {...settings}>
-      {[...Array(numberOfSlides)].map((_, slideIndex) => (
-        <div key={slideIndex}>
-          <div style={{ display: "flex" }}>
-            {[...Array(3)].map((_, cardIndex) => {
-              const jobIndex = slideIndex * 3 + cardIndex;
-              const job = jobs[jobIndex];
+      <Slider {...settings}>
+        {[...Array(numberOfSlides)].map((_, slideIndex) => (
+          <div key={slideIndex}>
+            <div style={{ display: "flex" }}>
+              {[...Array(3)].map((_, cardIndex) => {
+                const jobIndex = slideIndex * 3 + cardIndex;
+                const job = jobs[jobIndex];
 
-              return (
-                <div
-                  key={jobIndex}
-                  style={{
-                    flex: "1",
-                    border: "1px solid transparent",
-                    padding: "20px",
-                    margin: "10px",
-                  }}
-                >
-                  {job && (
-                    <Card>
-                      <CardUpper>
-                        <Time>{job.biddingDeadline}</Time>
-                        <Category>{job.category}</Category>
-                        <Service>{job.shopAddress}</Service>
-                        <Make>{job.make}</Make>
-                      </CardUpper>
-                      <CardLower>
-                        <DescHeading>Description</DescHeading>
-                        <Desc>{formatDescription(job.description)}</Desc>
-                        <ImagesContainer>
-                          {[100, 200, 400, 800].map((width) => (
-                            <Img
-                              key={width}
-                              loading="lazy"
-                              srcSet={`${job.jobPicture}?apiKey=9a669d50f53c42b584b65aa6b91b08d5&width=${width} ${width}w`}
-                            />
-                          ))}
-                        </ImagesContainer>
-                        <BtnArea>
-                          <SbtBtnContainer>
-                            <SbtBtn>Submit Bid</SbtBtn>
-                          </SbtBtnContainer>
-                          <InfoBtnContainer>
-                            <InfoBtn>More Info</InfoBtn>
-                          </InfoBtnContainer>
-                        </BtnArea>
-                      </CardLower>
-                    </Card>
-                  )}
-                </div>
-              );
-            })}
+                return (
+                  <div
+                    key={jobIndex}
+                    style={{
+                      flex: "1",
+                      border: "1px solid transparent",
+                      padding: "20px",
+                      margin: "10px",
+                    }}
+                  >
+                    {job && (
+                      <Card>
+                        <CardUpper>
+                          <Time>{job.biddingDeadline}</Time>
+                          <Category>{job.category}</Category>
+                          <Service>{job.shopAddress}</Service>
+                          <Make>{job.make}</Make>
+                        </CardUpper>
+                        <CardLower>
+                          <DescHeading>Description</DescHeading>
+                          <Desc>{formatDescription(job.description)}</Desc>
+                          <ImagesContainer>
+                            {[100, 200, 400, 800].map((width) => (
+                              <Img
+                                key={width}
+                                loading="lazy"
+                                srcSet={`${job.jobPicture}?apiKey=9a669d50f53c42b584b65aa6b91b08d5&width=${width} ${width}w`}
+                              />
+                            ))}
+                          </ImagesContainer>
+                          <BtnArea>
+                            <SbtBtnContainer>
+                              {/* Attach the handleBidSubmission function to the onClick event */}
+                              <SbtBtn onClick={() => handleBidSubmission(job)}>Submit Bid</SbtBtn>
+                            </SbtBtnContainer>
+                            <InfoBtnContainer>
+                              <InfoBtn>More Info</InfoBtn>
+                            </InfoBtnContainer>
+                          </BtnArea>
+                        </CardLower>
+                      </Card>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
-    </Slider>
-    <SeeBtn>See more</SeeBtn>
-    <BidArea>
-    <Div49>
-    <Space />
-    <BidsHeading>
-      <span style={{color:" rgba(255,193,3,1)"}}>Submitted Bids</span>
-      <span style={{color: "rgba(55,53,44,1)"}}> (1)</span>
-    </BidsHeading>
-    </Div49>
-    <Div52>
-    <BidTime>
-      Initiated Oct 29, 2023
-      <br />
-      16 days ago
-    </BidTime>
-    <BidService>Car Repair</BidService>
-    <AnotherSpace>
-      <Column>      <Img12
-        loading="lazy"
-        src="https://cdn.builder.io/api/v1/image/assets/TEMP/9541edeaaeb7411c29b47b8494f3fb4ad5fa8fc395c1121d88e1b3b5feb4bee2?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"
-      />
-      <Viewed>Viewed by client</Viewed></Column>
-
-      </AnotherSpace>
-      </Div52>
-    </BidArea>
-    <SeeBtn>See more</SeeBtn>
+        ))}
+      </Slider>
+      <SeeBtn>See more</SeeBtn>
+      <BidArea>
+        <Div49>
+          <Space />
+          <BidsHeading>
+            <span style={{color:"rgba(255,193,3,1)"}}>Submitted Bids</span>
+            <span style={{color:"rgba(55,53,44,1)"}}> ({bidCount})</span>
+          </BidsHeading>
+        </Div49>
+        {submittedBids.map((bid, index) => (
+          <Div52 key={index}>
+            <BidTime>
+              {/* Assuming bidding time is part of the job object */}
+              Initiated {bid.biddingDeadline}
+              <br />
+              {/* Update the time calculation based on your requirements */}
+              {/* 16 days ago */}
+            </BidTime>
+            <BidService>{bid.category}</BidService>
+            <AnotherSpace>
+              <Column>
+                <Img12
+                  loading="lazy"
+                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/9541edeaaeb7411c29b47b8494f3fb4ad5fa8fc395c1121d88e1b3b5feb4bee2?apiKey=9a669d50f53c42b584b65aa6b91b08d5&"
+                />
+                <Viewed>Viewed by client</Viewed>
+              </Column>
+            </AnotherSpace>
+          </Div52>
+        ))}
+      </BidArea>
+      <SeeBtn>See more</SeeBtn>
     </div>
-
-  )
+  );
 };
 
 function formatDescription(description) {

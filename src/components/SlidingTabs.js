@@ -6,6 +6,8 @@ import VendorCompletedJobs from '../pages/VendorCompletedJobs';
 import VendorDashboardComponent from './VendorDashboard';
 import Preferences from '../pages/Preferences'
 
+// ...
+
 const options = [
   { id: 1, label: 'Pending Jobs', component: VendorPendingJobs },
   { id: 2, label: 'Completed Jobs', component: VendorCompletedJobs },
@@ -13,8 +15,10 @@ const options = [
   { id: 4, label: 'Notifications', component: VendorDashboardComponent },
 ];
 
-const SlidingTabs = () => {
+const SlidingTabs = ({ userInfo }) => {
   const [activeOption, setActiveOption] = useState(options[0].id);
+  console.log(userInfo)
+
 
   const handleOptionClick = (optionId) => {
     setActiveOption(optionId);
@@ -38,12 +42,17 @@ const SlidingTabs = () => {
       </TabsContainer>
       <TabContent isActive={activeOption}>
         {options.map((option) =>
-          activeOption === option.id ? <option.component key={option.id} /> : null
+          activeOption === option.id ? (
+            <option.component key={option.id} userInfo={userInfo} />
+          ) : null
         )}
       </TabContent>
     </div>
   );
 };
+
+// ...
+
 const Container = styled.div`
   border-radius: 16px;
   align-items:center;
